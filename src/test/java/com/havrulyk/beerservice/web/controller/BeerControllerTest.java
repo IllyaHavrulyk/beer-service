@@ -2,6 +2,7 @@ package com.havrulyk.beerservice.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.havrulyk.beerservice.web.model.BeerDto;
+import com.havrulyk.beerservice.web.model.BeerStyleEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -11,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @WebMvcTest(BeerController.class)
@@ -44,7 +46,12 @@ class BeerControllerTest {
 
     @Test
     void updateBeerById() throws Exception {
-        BeerDto beerDto = BeerDto.builder().build();
+        BeerDto beerDto = BeerDto.builder()
+                .beerStyle(BeerStyleEnum.ALE)
+                .beerName("Ssanina")
+                .upc(12L)
+                .price(new BigDecimal(1200))
+                .build();
         String beerDtoToJson = objectMapper.writeValueAsString(beerDto);
         mockMvc.perform(MockMvcRequestBuilders
             .put("/api/v1/beer/" + UUID.randomUUID())
